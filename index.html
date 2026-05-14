@@ -10,6 +10,7 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --green: #178E6B; --green-light: #E1F5EE; --green-dark: #0F6E56;
+    --red: #DC2626; --red-light: #FEF2F2;
     --text: #1a1a1a; --text-muted: #6b7280;
     --bg: #f9fafb; --surface: #ffffff;
     --border: #e5e7eb; --radius: 10px; --radius-sm: 7px;
@@ -34,6 +35,13 @@
   .step-pip.active { background: var(--green); border-color: var(--green); color: #fff; }
   .step-pip.done { background: var(--green-light); border-color: var(--green-light); color: var(--green-dark); }
 
+  /* Validation error banner */
+  .error-banner { display: none; background: var(--red-light); border: 1px solid #fca5a5; border-radius: var(--radius-sm); padding: .85rem 1rem; margin-bottom: 1.25rem; font-size: 13px; color: var(--red); }
+  .error-banner.show { display: block; }
+  .error-banner strong { font-weight: 600; display: block; margin-bottom: .3rem; }
+  .error-banner ul { padding-left: 1.2rem; }
+  .error-banner li { margin-top: .2rem; }
+
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); display: none; }
   .card.active { display: block; }
   .section-num { font-size: 11px; font-weight: 600; color: var(--green); letter-spacing: .08em; text-transform: uppercase; margin-bottom: .4rem; }
@@ -42,10 +50,19 @@
 
   .field { margin-bottom: 1.25rem; }
   .field label { display: block; font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: .45rem; }
+  .field label .req { color: var(--red); margin-left: 2px; }
   .field input, .field select, .field textarea { width: 100%; font-size: 14px; font-family: 'Inter', sans-serif; padding: 10px 13px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); color: var(--text); transition: border-color .15s, box-shadow .15s; outline: none; }
   .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(23,142,107,.1); background: #fff; }
   .field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
   .field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; cursor: pointer; }
+
+  /* Error states */
+  .field.has-error input, .field.has-error select, .field.has-error textarea { border-color: var(--red); background: var(--red-light); }
+  .field.has-error input:focus, .field.has-error select:focus, .field.has-error textarea:focus { box-shadow: 0 0 0 3px rgba(220,38,38,.1); }
+  .field-error-msg { font-size: 12px; color: var(--red); margin-top: .3rem; }
+
+  .group-error { border: 1px solid #fca5a5 !important; border-radius: var(--radius-sm); background: var(--red-light) !important; padding: 8px; }
+
   .hint { font-size: 12px; color: var(--text-muted); margin-top: .35rem; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
@@ -61,17 +78,21 @@
   .scale-btn:hover { border-color: var(--green); color: var(--green); }
   .scale-btn.sel { background: var(--green); border-color: var(--green); color: #fff; }
 
-  .strategic-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .strategic-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin-bottom: 1rem; transition: border-color .15s; }
+  .strategic-item.has-error { border-color: #fca5a5; background: var(--red-light); }
   .strategic-item .q-num { font-size: 11px; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: .07em; margin-bottom: .3rem; }
   .strategic-item label { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: .5rem; display: block; }
-  .strategic-item textarea { width: 100%; font-size: 14px; font-family: 'Inter', sans-serif; padding: 9px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: #fff; color: var(--text); min-height: 68px; resize: vertical; outline: none; line-height: 1.6; }
+  .strategic-item label .req { color: var(--red); margin-left: 2px; }
+  .strategic-item textarea { width: 100%; font-size: 14px; font-family: 'Inter', sans-serif; padding: 9px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: #fff; color: var(--text); min-height: 68px; resize: vertical; outline: none; line-height: 1.6; transition: border-color .15s, box-shadow .15s; }
   .strategic-item textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(23,142,107,.1); }
+  .strategic-item.has-error textarea { border-color: #fca5a5; background: #fff; }
 
   .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
   .btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; transition: all .15s; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
   .btn:hover { background: var(--bg); }
   .btn.primary { background: var(--green); border-color: var(--green); color: #fff; }
   .btn.primary:hover { background: var(--green-dark); }
+  .btn.primary:disabled { opacity: .6; cursor: not-allowed; }
   .btn.ghost { border-color: transparent; background: transparent; color: var(--text-muted); }
   .btn.ghost:hover { background: var(--bg); color: var(--text); }
   .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
@@ -88,8 +109,14 @@
   .copy-actions { display: flex; gap: 8px; margin-top: .75rem; flex-wrap: wrap; }
   .divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
 
+  .sending-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,.85); z-index: 100; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; font-size: 15px; font-weight: 500; color: var(--text); }
+  .sending-overlay.show { display: flex; }
+  .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--green); color: #fff; font-size: 14px; font-weight: 500; padding: 12px 20px; border-radius: var(--radius-sm); box-shadow: var(--shadow-md); transform: translateY(80px); opacity: 0; transition: all .3s; z-index: 999; }
   .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.error { background: var(--red); }
 
   .success-wrap { text-align: center; }
   .success-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
@@ -126,12 +153,13 @@
     <div class="section-num">Seção 1 de 10</div>
     <div class="section-title">Sobre o negócio</div>
     <div class="section-sub">Nos conte quem é você e o que o seu negócio faz</div>
+    <div class="error-banner" id="err1"></div>
     <div class="row">
-      <div class="field"><label>Nome da empresa *</label><input id="nome_empresa" placeholder="Ex: Studio Criativo Ltda."></div>
+      <div class="field" id="f_nome_empresa"><label>Nome da empresa <span class="req">*</span></label><input id="nome_empresa" placeholder="Ex: Studio Criativo Ltda."></div>
       <div class="field"><label>Nome fantasia (se diferente)</label><input id="nome_fantasia" placeholder="Ex: Studio Criativo"></div>
     </div>
     <div class="row">
-      <div class="field"><label>Segmento de atuação *</label><input id="segmento" placeholder="Ex: moda, saúde, tecnologia…"></div>
+      <div class="field" id="f_segmento"><label>Segmento de atuação <span class="req">*</span></label><input id="segmento" placeholder="Ex: moda, saúde, tecnologia…"></div>
       <div class="field"><label>Tempo de mercado</label><input id="tempo_mercado" placeholder="Ex: 3 anos, recém-lançado…"></div>
     </div>
     <div class="row">
@@ -139,12 +167,12 @@
       <div class="field"><label>Redes sociais (principais)</label><input id="redes" placeholder="@perfil ou link"></div>
     </div>
     <div class="row">
-      <div class="field"><label>Seu nome *</label><input id="responsavel" placeholder="Nome completo"></div>
-      <div class="field"><label>E-mail ou WhatsApp *</label><input id="contato" placeholder="contato@empresa.com"></div>
+      <div class="field" id="f_responsavel"><label>Seu nome <span class="req">*</span></label><input id="responsavel" placeholder="Nome completo"></div>
+      <div class="field" id="f_contato"><label>E-mail ou WhatsApp <span class="req">*</span></label><input id="contato" placeholder="contato@empresa.com"></div>
     </div>
-    <div class="field"><label>Descreva o negócio em poucas frases</label><textarea id="descricao_negocio" placeholder="O que a empresa faz, como gera valor, quais produtos ou serviços oferece…"></textarea></div>
+    <div class="field" id="f_descricao_negocio"><label>Descreva o negócio em poucas frases <span class="req">*</span></label><textarea id="descricao_negocio" placeholder="O que a empresa faz, como gera valor, quais produtos ou serviços oferece…"></textarea></div>
     <div class="field"><label>Principais concorrentes</label><input id="concorrentes" placeholder="Ex: Empresa A, Empresa B (mencione 2 ou 3)"></div>
-    <div class="field"><label>Principal diferencial em relação à concorrência</label><textarea id="diferencial" placeholder="Ex: atendimento personalizado, preço competitivo, tecnologia exclusiva…" style="min-height:64px"></textarea></div>
+    <div class="field" id="f_diferencial"><label>Principal diferencial em relação à concorrência <span class="req">*</span></label><textarea id="diferencial" placeholder="Ex: atendimento personalizado, preço competitivo, tecnologia exclusiva…" style="min-height:64px"></textarea></div>
   </div>
 
   <!-- S2: Tipo e objetivo -->
@@ -152,8 +180,9 @@
     <div class="section-num">Seção 2 de 10</div>
     <div class="section-title">Tipo de site e objetivo</div>
     <div class="section-sub">Qual formato e finalidade estratégica do projeto?</div>
+    <div class="error-banner" id="err2"></div>
     <div class="field">
-      <label>Qual o tipo principal do site?</label>
+      <label>Qual o tipo principal do site? <span class="req">*</span></label>
       <div class="radio-grid" id="tipo_site">
         <label class="choice-item"><input type="radio" name="tipo" value="Landing Page"> Landing Page</label>
         <label class="choice-item"><input type="radio" name="tipo" value="Site Institucional"> Site Institucional</label>
@@ -165,7 +194,7 @@
         <label class="choice-item"><input type="radio" name="tipo" value="Área de membros"> Área de membros</label>
       </div>
     </div>
-    <div class="field"><label>Objetivo principal do site</label>
+    <div class="field" id="f_objetivo_principal"><label>Objetivo principal do site <span class="req">*</span></label>
       <select id="objetivo_principal">
         <option value="">Selecione…</option>
         <option>Gerar leads / captar clientes</option>
@@ -178,10 +207,10 @@
         <option>Outro</option>
       </select>
     </div>
-    <div class="field"><label>Qual seria o indicador concreto de sucesso?</label><input id="kpi" placeholder="Ex: 50 leads/mês, 200 vendas, reduzir 30% das dúvidas no SAC…"></div>
-    <div class="field"><label>Qual o CTA (chamada para ação) principal do site?</label><input id="cta_principal" placeholder="Ex: 'Solicitar orçamento', 'Agendar consulta', 'Comprar agora'…"></div>
+    <div class="field" id="f_kpi"><label>Como será medido o sucesso do site? <span class="req">*</span></label><input id="kpi" placeholder="Ex: 50 leads/mês, 200 vendas, reduzir 30% das dúvidas no SAC…"></div>
+    <div class="field" id="f_cta_principal"><label>Qual o CTA (chamada para ação) principal? <span class="req">*</span></label><input id="cta_principal" placeholder="Ex: 'Solicitar orçamento', 'Agendar consulta', 'Comprar agora'…"></div>
     <div class="field">
-      <label>Este site deve ser construído para crescer ou é uma solução pontual?</label>
+      <label>Este site deve crescer a longo prazo ou é uma solução pontual? <span class="req">*</span></label>
       <div class="radio-grid" id="escalabilidade">
         <label class="choice-item"><input type="radio" name="escala" value="Para crescer (escala a longo prazo)"> Para crescer (escala)</label>
         <label class="choice-item"><input type="radio" name="escala" value="Solução pontual / curto prazo"> Solução pontual</label>
@@ -189,8 +218,7 @@
     </div>
     <div class="field"><label>Tem algum site atual? Se sim, qual o endereço?</label><input id="site_atual" placeholder="https:// (ou 'não tenho')"></div>
     <div class="field"><label>O que deve ser aproveitado ou descartado do site atual?</label><textarea id="site_atual_obs" placeholder="Conteúdo, estrutura, visual, domínio…" style="min-height:64px"></textarea></div>
-    <div class="field"><label>Sites de referência que você admira (até 3)</label><textarea id="referencias" placeholder="https://... — o que gosta? O que não gosta?" style="min-height:72px"></textarea></div>
-    <div class="field"><label>Sites que você NÃO gosta (e por quê)</label><input id="nao_gosta" placeholder="O que te incomoda no visual ou na usabilidade deles?"></div>
+    <div class="field" id="f_referencias"><label>Sites de referência que você admira (até 3) <span class="req">*</span></label><textarea id="referencias" placeholder="https://... — o que gosta? O que não gosta?" style="min-height:72px"></textarea></div>
   </div>
 
   <!-- S3: Público -->
@@ -198,10 +226,11 @@
     <div class="section-num">Seção 3 de 10</div>
     <div class="section-title">Público-alvo e experiência do usuário</div>
     <div class="section-sub">Quem vai acessar o site e como se comporta?</div>
-    <div class="field"><label>Quem é o cliente ideal?</label><textarea id="publico_alvo" placeholder="Perfil geral, cargo, estilo de vida, contexto de compra…" style="min-height:64px"></textarea></div>
+    <div class="error-banner" id="err3"></div>
+    <div class="field" id="f_publico_alvo"><label>Quem é o cliente ideal? <span class="req">*</span></label><textarea id="publico_alvo" placeholder="Perfil geral, cargo, estilo de vida, contexto de compra…" style="min-height:64px"></textarea></div>
     <div class="row">
-      <div class="field"><label>Faixa etária predominante</label><input id="faixa_etaria" placeholder="Ex: 25–40 anos"></div>
-      <div class="field"><label>Classe de consumo</label>
+      <div class="field" id="f_faixa_etaria"><label>Faixa etária predominante <span class="req">*</span></label><input id="faixa_etaria" placeholder="Ex: 25–40 anos"></div>
+      <div class="field" id="f_classe_consumo"><label>Classe de consumo <span class="req">*</span></label>
         <select id="classe_consumo">
           <option value="">Selecione…</option>
           <option>A (alta renda)</option>
@@ -212,10 +241,10 @@
         </select>
       </div>
     </div>
-    <div class="field"><label>Principais dores do público</label><textarea id="dores" placeholder="Quais problemas eles querem resolver? O que os frustra hoje?" style="min-height:64px"></textarea></div>
-    <div class="field"><label>Principais desejos e aspirações</label><textarea id="desejos" placeholder="O que eles querem conquistar ou sentir?" style="min-height:64px"></textarea></div>
+    <div class="field" id="f_dores"><label>Principais dores do público <span class="req">*</span></label><textarea id="dores" placeholder="Quais problemas eles querem resolver? O que os frustra hoje?" style="min-height:64px"></textarea></div>
+    <div class="field" id="f_desejos"><label>Principais desejos e aspirações <span class="req">*</span></label><textarea id="desejos" placeholder="O que eles querem conquistar ou sentir?" style="min-height:64px"></textarea></div>
     <div class="field">
-      <label>Qual o "momento" do usuário ao acessar o site?</label>
+      <label>Qual o "momento" do usuário ao acessar o site? <span class="req">*</span></label>
       <div class="radio-grid" id="momento_usuario">
         <label class="choice-item"><input type="radio" name="momento" value="Urgente — quer solução agora"> Urgente — quer solução agora</label>
         <label class="choice-item"><input type="radio" name="momento" value="Pesquisando e comparando opções"> Pesquisando e comparando</label>
@@ -224,7 +253,7 @@
       </div>
     </div>
     <div class="field">
-      <label>Dispositivo prioritário do público</label>
+      <label>Dispositivo prioritário do público <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="dispositivo">
         <label class="choice-item"><input type="radio" name="device" value="Mobile first (smartphone)"> Mobile first</label>
         <label class="choice-item"><input type="radio" name="device" value="Desktop (trabalho/escritório)"> Desktop</label>
@@ -232,7 +261,7 @@
       </div>
     </div>
     <div class="field">
-      <label>O público costuma comprar por impulso ou pesquisa muito?</label>
+      <label>O público compra por impulso ou pesquisa muito? <span class="req">*</span></label>
       <div class="radio-grid" id="comportamento_compra">
         <label class="choice-item"><input type="radio" name="compra" value="Por impulso / decisão rápida"> Por impulso</label>
         <label class="choice-item"><input type="radio" name="compra" value="Pesquisa muito antes de decidir"> Pesquisa muito</label>
@@ -245,8 +274,9 @@
     <div class="section-num">Seção 4 de 10</div>
     <div class="section-title">Identidade visual e estilo</div>
     <div class="section-sub">Diretrizes de aparência para o projeto</div>
+    <div class="error-banner" id="err4"></div>
     <div class="field">
-      <label>Você já possui identidade visual?</label>
+      <label>Você já possui identidade visual? <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="tem_id_visual">
         <label class="choice-item"><input type="radio" name="idvisual" value="Sim, completa (manual de marca)"> Sim, completa</label>
         <label class="choice-item"><input type="radio" name="idvisual" value="Só tenho logo"> Só tenho logo</label>
@@ -254,7 +284,7 @@
       </div>
     </div>
     <div class="field">
-      <label>Deseja manter a identidade atual ou quer redesign?</label>
+      <label>Deseja manter a identidade atual ou quer redesign? <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="redesign">
         <label class="choice-item"><input type="radio" name="redesign" value="Manter identidade atual"> Manter atual</label>
         <label class="choice-item"><input type="radio" name="redesign" value="Redesign parcial"> Redesign parcial</label>
@@ -262,11 +292,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="field"><label>Cores da marca (ou preferências)</label><input id="cores" placeholder="Ex: azul escuro + laranja, #1A2B3C"></div>
+      <div class="field" id="f_cores"><label>Cores da marca ou preferências <span class="req">*</span></label><input id="cores" placeholder="Ex: azul escuro + laranja, #1A2B3C"></div>
       <div class="field"><label>Cores proibidas</label><input id="cores_proibidas" placeholder="Cores que jamais devem aparecer"></div>
     </div>
     <div class="field">
-      <label>Tom e personalidade da marca</label>
+      <label>Tom e personalidade da marca <span class="req">*</span></label>
       <div class="check-grid" id="tom_marca">
         <label class="choice-item"><input type="checkbox" value="Profissional e sério"> Profissional e sério</label>
         <label class="choice-item"><input type="checkbox" value="Descontraído e divertido"> Descontraído e divertido</label>
@@ -279,14 +309,14 @@
       </div>
     </div>
     <div class="field">
-      <label>Tema de cores preferido para o site</label>
+      <label>Tema de cores preferido <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="tema_cores">
         <label class="choice-item"><input type="radio" name="tema" value="Claro (light)"> Claro</label>
         <label class="choice-item"><input type="radio" name="tema" value="Escuro (dark)"> Escuro</label>
         <label class="choice-item"><input type="radio" name="tema" value="Sem preferência"> Sem preferência</label>
       </div>
     </div>
-    <div class="field"><label>Imagens / fotos: quem vai fornecer?</label>
+    <div class="field" id="f_imagens"><label>Imagens / fotos: quem vai fornecer? <span class="req">*</span></label>
       <select id="imagens">
         <option value="">Selecione…</option>
         <option>O próprio cliente fornece tudo</option>
@@ -296,14 +326,13 @@
       </select>
     </div>
     <div class="field">
-      <label>Possui vídeos para usar no site?</label>
+      <label>Possui vídeos para usar no site? <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="tem_videos">
         <label class="choice-item"><input type="radio" name="videos" value="Sim, tenho vídeos prontos"> Sim</label>
         <label class="choice-item"><input type="radio" name="videos" value="Precisarei produzir"> Precisarei produzir</label>
         <label class="choice-item"><input type="radio" name="videos" value="Não usarei vídeos"> Não usarei</label>
       </div>
     </div>
-    <div class="field"><label>Observações adicionais sobre visual</label><textarea id="obs_visual" placeholder="Fontes preferidas, estilos que não gosta, referências…" style="min-height:64px"></textarea></div>
   </div>
 
   <!-- S5: Conteúdo -->
@@ -311,8 +340,9 @@
     <div class="section-num">Seção 5 de 10</div>
     <div class="section-title">Conteúdo e páginas</div>
     <div class="section-sub">Estrutura, responsabilidade pelo conteúdo e inventário de ativos</div>
+    <div class="error-banner" id="err5"></div>
     <div class="field">
-      <label>Quais páginas o site terá?</label>
+      <label>Quais páginas o site terá? <span class="req">*</span></label>
       <div class="check-grid" id="paginas">
         <label class="choice-item"><input type="checkbox" value="Home"> Home</label>
         <label class="choice-item"><input type="checkbox" value="Sobre / Quem somos"> Sobre / Quem somos</label>
@@ -328,11 +358,7 @@
         <label class="choice-item"><input type="checkbox" value="Agendamento"> Agendamento</label>
       </div>
     </div>
-    <div class="row">
-      <div class="field"><label>Outras páginas não listadas</label><input id="paginas_outras" placeholder="Ex: calculadora, quiz, área do parceiro…"></div>
-      <div class="field"><label>Quantidade estimada de páginas</label><input id="qtd_paginas" placeholder="Ex: 5, 10–15, não sei ainda…"></div>
-    </div>
-    <div class="field"><label>Responsável pelos textos do site</label>
+    <div class="field" id="f_quem_texto"><label>Responsável pelos textos do site <span class="req">*</span></label>
       <select id="quem_texto">
         <option value="">Selecione…</option>
         <option>O próprio cliente fornece tudo pronto</option>
@@ -341,10 +367,10 @@
         <option>Misto (cliente + apoio da equipe)</option>
         <option>Vou produzir durante o desenvolvimento</option>
       </select>
-      <div class="hint">⚠️ Produzir o conteúdo durante o desenvolvimento impacta diretamente o prazo de entrega.</div>
+      <div class="hint">⚠️ Produzir durante o desenvolvimento impacta diretamente o prazo de entrega.</div>
     </div>
     <div class="field">
-      <label>Já possui textos prontos para o site?</label>
+      <label>Já possui textos prontos? <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="tem_textos">
         <label class="choice-item"><input type="radio" name="textos" value="Sim, textos finais prontos"> Sim, prontos</label>
         <label class="choice-item"><input type="radio" name="textos" value="Tenho rascunhos / ideias"> Tenho rascunhos</label>
@@ -352,7 +378,7 @@
       </div>
     </div>
     <div class="field">
-      <label>O site precisará de mais de um idioma?</label>
+      <label>O site precisará de mais de um idioma? <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="idiomas">
         <label class="choice-item"><input type="radio" name="idioma" value="Só português"> Só português</label>
         <label class="choice-item"><input type="radio" name="idioma" value="Português + Inglês"> PT + EN</label>
@@ -360,13 +386,12 @@
       </div>
     </div>
     <div class="field">
-      <label>Haverá múltiplas unidades ou filiais no site?</label>
+      <label>Haverá múltiplas unidades ou filiais? <span class="req">*</span></label>
       <div class="radio-grid" id="filiais">
         <label class="choice-item"><input type="radio" name="filiais" value="Sim"> Sim</label>
         <label class="choice-item"><input type="radio" name="filiais" value="Não"> Não</label>
       </div>
     </div>
-    <div class="field"><label>Quantidade estimada de produtos/serviços (se aplicável)</label><input id="qtd_produtos" placeholder="Ex: 30 produtos, 5 serviços, ou 'não se aplica'"></div>
   </div>
 
   <!-- S6: Funcionalidades -->
@@ -374,8 +399,9 @@
     <div class="section-num">Seção 6 de 10</div>
     <div class="section-title">Funcionalidades</div>
     <div class="section-sub">Recursos técnicos que o site precisará ter</div>
+    <div class="error-banner" id="err6"></div>
     <div class="field">
-      <label>Quais funcionalidades serão necessárias?</label>
+      <label>Quais funcionalidades serão necessárias? <span class="req">*</span></label>
       <div class="check-grid" id="funcionalidades">
         <label class="choice-item"><input type="checkbox" value="Formulário de contato"> Formulário de contato</label>
         <label class="choice-item"><input type="checkbox" value="Formulário de orçamento"> Formulário de orçamento</label>
@@ -401,10 +427,11 @@
         <label class="choice-item"><input type="checkbox" value="Chatbot / IA"> Chatbot / IA</label>
         <label class="choice-item"><input type="checkbox" value="Comparador de produtos"> Comparador</label>
         <label class="choice-item"><input type="checkbox" value="Catálogo de produtos"> Catálogo</label>
+        <label class="choice-item"><input type="checkbox" value="Nenhuma das anteriores"> Nenhuma das anteriores</label>
       </div>
     </div>
     <div class="field">
-      <label>Integrações com sistemas externos</label>
+      <label>Integrações com sistemas externos <span class="req">*</span></label>
       <div class="check-grid" id="integracoes">
         <label class="choice-item"><input type="checkbox" value="CRM (HubSpot, RD Station…)"> CRM</label>
         <label class="choice-item"><input type="checkbox" value="E-mail marketing / automação"> E-mail marketing</label>
@@ -415,10 +442,9 @@
         <label class="choice-item"><input type="checkbox" value="Google Agenda / calendário"> Google Agenda</label>
         <label class="choice-item"><input type="checkbox" value="API de CEP / frete"> API de CEP</label>
         <label class="choice-item"><input type="checkbox" value="Plataforma EAD"> Plataforma EAD</label>
-        <label class="choice-item"><input type="checkbox" value="API personalizada"> API personalizada</label>
+        <label class="choice-item"><input type="checkbox" value="Nenhuma integração"> Nenhuma integração</label>
       </div>
     </div>
-    <div class="field"><label>Outras funcionalidades ou integrações não listadas</label><textarea id="func_outras" placeholder="Descreva qualquer necessidade técnica específica…" style="min-height:64px"></textarea></div>
   </div>
 
   <!-- S7: SEO e marketing -->
@@ -426,8 +452,9 @@
     <div class="section-num">Seção 7 de 10</div>
     <div class="section-title">SEO e marketing digital</div>
     <div class="section-sub">Visibilidade, rastreamento e captação</div>
+    <div class="error-banner" id="err7"></div>
     <div class="field">
-      <label>O site precisará ser otimizado para SEO?</label>
+      <label>O site precisará ser otimizado para SEO? <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="seo_opt">
         <label class="choice-item"><input type="radio" name="seo" value="Sim, é prioridade"> Prioridade</label>
         <label class="choice-item"><input type="radio" name="seo" value="Básico"> Básico</label>
@@ -435,15 +462,15 @@
       </div>
     </div>
     <div class="field">
-      <label>Quer SEO local (aparecer em buscas da sua cidade/região)?</label>
+      <label>Quer SEO local (aparecer em buscas da sua cidade)? <span class="req">*</span></label>
       <div class="radio-grid" id="seo_local">
         <label class="choice-item"><input type="radio" name="seolocal" value="Sim"> Sim</label>
         <label class="choice-item"><input type="radio" name="seolocal" value="Não"> Não</label>
       </div>
     </div>
-    <div class="field"><label>Palavras-chave estratégicas (se souber)</label><input id="keywords" placeholder="Ex: consultoria financeira SP, clínica de estética BH…"></div>
+    <div class="field" id="f_keywords"><label>Palavras-chave estratégicas <span class="req">*</span></label><input id="keywords" placeholder="Ex: consultoria financeira SP, clínica de estética BH…"></div>
     <div class="field">
-      <label>Ferramentas de rastreamento necessárias</label>
+      <label>Ferramentas de rastreamento necessárias <span class="req">*</span></label>
       <div class="check-grid" id="tracking">
         <label class="choice-item"><input type="checkbox" value="Google Analytics 4"> Google Analytics 4</label>
         <label class="choice-item"><input type="checkbox" value="Google Tag Manager"> Tag Manager</label>
@@ -456,7 +483,7 @@
       </div>
     </div>
     <div class="field">
-      <label>Já roda tráfego pago atualmente?</label>
+      <label>Já roda tráfego pago atualmente? <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="trafego_atual">
         <label class="choice-item"><input type="radio" name="trafego_atual" value="Sim, ativamente"> Sim</label>
         <label class="choice-item"><input type="radio" name="trafego_atual" value="Pretendo iniciar"> Pretendo iniciar</label>
@@ -464,7 +491,7 @@
       </div>
     </div>
     <div class="field">
-      <label>Possui funil de vendas estruturado?</label>
+      <label>Possui funil de vendas estruturado? <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="funil">
         <label class="choice-item"><input type="radio" name="funil" value="Sim, funil definido"> Sim</label>
         <label class="choice-item"><input type="radio" name="funil" value="Parcialmente"> Parcialmente</label>
@@ -472,7 +499,7 @@
       </div>
     </div>
     <div class="field">
-      <label>O site precisa estar em conformidade com a LGPD?</label>
+      <label>O site precisa estar em conformidade com a LGPD? <span class="req">*</span></label>
       <div class="radio-grid" id="lgpd">
         <label class="choice-item"><input type="radio" name="lgpd" value="Sim (banner de cookies + política de privacidade)"> Sim</label>
         <label class="choice-item"><input type="radio" name="lgpd" value="Não sei, me oriente"> Não sei, me oriente</label>
@@ -485,29 +512,27 @@
     <div class="section-num">Seção 8 de 10</div>
     <div class="section-title">Tecnologia e infraestrutura</div>
     <div class="section-sub">Domínio, hospedagem, CMS, segurança e gestão</div>
+    <div class="error-banner" id="err8"></div>
     <div class="field">
-      <label>Já tem domínio registrado?</label>
+      <label>Já tem domínio registrado? <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="dominio">
         <label class="choice-item"><input type="radio" name="dominio" value="Sim"> Sim</label>
         <label class="choice-item"><input type="radio" name="dominio" value="Não, vou adquirir"> Não, vou adquirir</label>
         <label class="choice-item"><input type="radio" name="dominio" value="Não sei"> Não sei</label>
       </div>
     </div>
-    <div class="row">
-      <div class="field"><label>Qual é o domínio? (ou pretendido)</label><input id="url_dominio" placeholder="www.nomedominio.com.br"></div>
-      <div class="field"><label>Onde está registrado?</label><input id="registrador" placeholder="Ex: Registro.br, GoDaddy, Hostgator…"></div>
-    </div>
+    <div class="field" id="f_url_dominio"><label>Qual é o domínio? (ou pretendido) <span class="req">*</span></label><input id="url_dominio" placeholder="www.nomedominio.com.br"></div>
     <div class="field">
-      <label>Já tem hospedagem?</label>
+      <label>Já tem hospedagem? <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="hospedagem">
         <label class="choice-item"><input type="radio" name="hospedagem" value="Sim"> Sim</label>
         <label class="choice-item"><input type="radio" name="hospedagem" value="Não"> Não</label>
         <label class="choice-item"><input type="radio" name="hospedagem" value="Não sei, me indique"> Não sei</label>
       </div>
     </div>
-    <div class="field"><label>Preferência por tecnologia ou CMS</label>
+    <div class="field" id="f_cms"><label>Preferência por tecnologia ou CMS <span class="req">*</span></label>
       <select id="cms">
-        <option value="">Selecione ou deixe em aberto…</option>
+        <option value="">Selecione…</option>
         <option>WordPress</option>
         <option>Webflow</option>
         <option>Next.js / React</option>
@@ -520,7 +545,7 @@
       </select>
     </div>
     <div class="field">
-      <label>Quem vai gerenciar e atualizar o conteúdo após a entrega?</label>
+      <label>Quem vai gerenciar o conteúdo após a entrega? <span class="req">*</span></label>
       <div class="radio-grid" id="autonomia_cms">
         <label class="choice-item"><input type="radio" name="cms_auto" value="O próprio cliente"> O próprio cliente</label>
         <label class="choice-item"><input type="radio" name="cms_auto" value="Equipe interna do cliente"> Equipe interna</label>
@@ -529,7 +554,7 @@
       </div>
     </div>
     <div class="field">
-      <label>Vai precisar de e-mail profissional?</label>
+      <label>Vai precisar de e-mail profissional? <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="email_prof">
         <label class="choice-item"><input type="radio" name="email" value="Sim"> Sim</label>
         <label class="choice-item"><input type="radio" name="email" value="Já tenho"> Já tenho</label>
@@ -537,7 +562,7 @@
       </div>
     </div>
     <div class="field">
-      <label>Volume de acessos esperado por mês</label>
+      <label>Volume de acessos esperado por mês <span class="req">*</span></label>
       <div class="radio-grid radio-grid-3" id="volume_acesso">
         <label class="choice-item"><input type="radio" name="volume" value="Até 5 mil/mês"> Até 5 mil</label>
         <label class="choice-item"><input type="radio" name="volume" value="5–50 mil/mês"> 5–50 mil</label>
@@ -546,7 +571,7 @@
     </div>
     <div class="divider"></div>
     <div class="field">
-      <label>Requisitos de segurança e jurídico</label>
+      <label>Requisitos de segurança e jurídico <span class="req">*</span></label>
       <div class="check-grid" id="seguranca">
         <label class="choice-item"><input type="checkbox" value="SSL (certificado HTTPS)"> SSL / HTTPS</label>
         <label class="choice-item"><input type="checkbox" value="Banner de cookies (LGPD)"> Banner de cookies</label>
@@ -558,12 +583,13 @@
     </div>
   </div>
 
-  <!-- S9: Prazo, orçamento e manutenção -->
+  <!-- S9: Prazo e orçamento -->
   <div class="card" id="s9">
     <div class="section-num">Seção 9 de 10</div>
     <div class="section-title">Prazo, orçamento e manutenção</div>
     <div class="section-sub">Gestão do projeto e expectativas financeiras</div>
-    <div class="field"><label>Qual é o prazo desejado para entrega?</label>
+    <div class="error-banner" id="err9"></div>
+    <div class="field" id="f_prazo"><label>Qual é o prazo desejado para entrega? <span class="req">*</span></label>
       <select id="prazo">
         <option value="">Selecione…</option>
         <option>Urgente (até 2 semanas)</option>
@@ -575,7 +601,7 @@
     </div>
     <div class="row">
       <div class="field"><label>Tem alguma data crítica (evento, campanha)?</label><input id="data_critica" placeholder="Ex: 15/08 — lançamento do produto"></div>
-      <div class="field"><label>O prazo é flexível?</label>
+      <div class="field" id="f_prazo_flexivel"><label>O prazo é flexível? <span class="req">*</span></label>
         <select id="prazo_flexivel">
           <option value="">Selecione…</option>
           <option>Sim, totalmente flexível</option>
@@ -585,11 +611,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="field"><label>Quem aprova as entregas?</label><input id="aprovador" placeholder="Nome e cargo"></div>
-      <div class="field"><label>Quantas pessoas participam das aprovações?</label><input id="qtd_aprovadores" placeholder="Ex: 1, 2–3, acima de 3…"></div>
+      <div class="field" id="f_aprovador"><label>Quem aprova as entregas? <span class="req">*</span></label><input id="aprovador" placeholder="Nome e cargo"></div>
+      <div class="field" id="f_qtd_aprovadores"><label>Quantas pessoas aprovam? <span class="req">*</span></label><input id="qtd_aprovadores" placeholder="Ex: 1, 2–3, acima de 3…"></div>
     </div>
     <div class="field">
-      <label>Quantas rodadas de revisão você espera?</label>
+      <label>Quantas rodadas de revisão você espera? <span class="req">*</span></label>
       <div class="scale-row" id="revisoes">
         <button type="button" class="scale-btn" onclick="setScale('revisoes',this,'1')">1</button>
         <button type="button" class="scale-btn" onclick="setScale('revisoes',this,'2')">2</button>
@@ -598,7 +624,7 @@
       </div>
       <div class="hint">Defina contratualmente o número de revisões inclusas.</div>
     </div>
-    <div class="field"><label>Faixa de investimento disponível</label>
+    <div class="field" id="f_budget"><label>Faixa de investimento disponível <span class="req">*</span></label>
       <select id="budget">
         <option value="">Selecione…</option>
         <option>Até R$ 1.500</option>
@@ -610,7 +636,8 @@
         <option>Prefiro não informar agora</option>
       </select>
     </div>
-    <div class="field"><label>Modalidade de pagamento preferida</label>
+    <div class="field">
+      <label>Modalidade de pagamento preferida <span class="req">*</span></label>
       <div class="radio-grid" id="pagamento">
         <label class="choice-item"><input type="radio" name="pgto" value="Pagamento único"> Único</label>
         <label class="choice-item"><input type="radio" name="pgto" value="Parcelado (entrada + etapas)"> Parcelado por etapas</label>
@@ -618,7 +645,7 @@
     </div>
     <div class="divider"></div>
     <div class="field">
-      <label>Manutenção após o lançamento</label>
+      <label>Manutenção após o lançamento <span class="req">*</span></label>
       <div class="check-grid" id="manutencao">
         <label class="choice-item"><input type="checkbox" value="Suporte mensal contratado"> Suporte mensal</label>
         <label class="choice-item"><input type="checkbox" value="Atualizações frequentes de conteúdo"> Atualizações de conteúdo</label>
@@ -630,56 +657,57 @@
     </div>
   </div>
 
-  <!-- S10: Perguntas estratégicas -->
+  <!-- S10: Estratégia -->
   <div class="card" id="s10">
     <div class="section-num">Seção 10 de 10</div>
     <div class="section-title">Perguntas estratégicas</div>
-    <div class="section-sub">Essas respostas definem o posicionamento, o copy e a hierarquia de conteúdo do site. Quanto mais detalhado, melhor o resultado.</div>
-    <div class="strategic-item">
+    <div class="section-sub">Quanto mais detalhado, melhor o resultado final do projeto.</div>
+    <div class="error-banner" id="err10"></div>
+    <div class="strategic-item" id="si_q1">
       <div class="q-num">Questão 1</div>
-      <label>Por que clientes escolhem a sua empresa e não a concorrência?</label>
-      <textarea id="q1" placeholder="O que você ouve dos clientes satisfeitos? O que eles costumam elogiar?"></textarea>
+      <label>Por que clientes escolhem você e não a concorrência? <span class="req">*</span></label>
+      <textarea id="q1" placeholder="O que os clientes satisfeitos costumam elogiar?"></textarea>
     </div>
-    <div class="strategic-item">
+    <div class="strategic-item" id="si_q2">
       <div class="q-num">Questão 2</div>
-      <label>O que mais gera vendas / clientes hoje?</label>
-      <textarea id="q2" placeholder="Indicação? Instagram? Google? Evento? Tráfego pago? Visita presencial?"></textarea>
+      <label>O que mais gera vendas / clientes hoje? <span class="req">*</span></label>
+      <textarea id="q2" placeholder="Indicação? Instagram? Google? Evento? Tráfego pago?"></textarea>
     </div>
-    <div class="strategic-item">
+    <div class="strategic-item" id="si_q3">
       <div class="q-num">Questão 3</div>
-      <label>O que mais afasta ou faz clientes desistirem?</label>
+      <label>O que mais afasta ou faz clientes desistirem? <span class="req">*</span></label>
       <textarea id="q3" placeholder="Preço? Falta de informação? Processo complicado? Desconfiança?"></textarea>
     </div>
-    <div class="strategic-item">
+    <div class="strategic-item" id="si_q4">
       <div class="q-num">Questão 4</div>
-      <label>Qual é a objeção mais comum antes da compra ou contratação?</label>
-      <textarea id="q4" placeholder="O que as pessoas perguntam ou pensam antes de fechar negócio?"></textarea>
+      <label>Qual é a objeção mais comum antes da compra? <span class="req">*</span></label>
+      <textarea id="q4" placeholder="O que as pessoas perguntam antes de fechar negócio?"></textarea>
     </div>
-    <div class="strategic-item">
+    <div class="strategic-item" id="si_q5">
       <div class="q-num">Questão 5</div>
-      <label>O que você deseja destacar no site? E o que NÃO quer comunicar?</label>
+      <label>O que destacar no site? E o que NÃO quer comunicar? <span class="req">*</span></label>
       <textarea id="q5" placeholder="Há algo que não deve aparecer? Algum serviço que prefere não priorizar?"></textarea>
     </div>
-    <div class="strategic-item">
+    <div class="strategic-item" id="si_q6">
       <div class="q-num">Questão 6</div>
-      <label>Se esse site tiver muito sucesso, o que mudaria no seu negócio?</label>
-      <textarea id="q6" placeholder="Mais clientes? Contratar equipe? Abrir novas unidades? Lançar produtos?"></textarea>
+      <label>Se esse site tiver muito sucesso, o que mudaria no seu negócio? <span class="req">*</span></label>
+      <textarea id="q6" placeholder="Mais clientes? Contratar equipe? Abrir novas unidades?"></textarea>
     </div>
-    <div class="field" style="margin-top:1.25rem"><label>Observações gerais ou informações adicionais</label><textarea id="obs_finais" placeholder="Qualquer detalhe relevante que não foi coberto acima…"></textarea></div>
+    <div class="field" style="margin-top:1.25rem"><label>Observações gerais</label><textarea id="obs_finais" placeholder="Qualquer detalhe relevante que não foi coberto acima…"></textarea></div>
   </div>
 
-  <!-- S11: Resumo -->
+  <!-- S11: Confirmação -->
   <div class="card" id="s11">
     <div class="success-wrap">
       <div class="success-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
-      <div class="section-title" style="margin-bottom:.4rem">Briefing concluído!</div>
-      <div class="section-sub">Aqui está o resumo das suas respostas</div>
+      <div class="section-title" style="margin-bottom:.4rem">Briefing enviado!</div>
+      <div class="section-sub" style="border:none;margin-bottom:0">Suas respostas foram enviadas com sucesso. Em breve entraremos em contato.</div>
     </div>
-    <div id="resumo_conteudo"></div>
+    <div style="margin-top:2rem" id="resumo_conteudo"></div>
     <div class="copy-box">
-      <textarea id="copy_area" readonly placeholder="O briefing em texto aparecerá aqui…"></textarea>
+      <textarea id="copy_area" readonly placeholder="Resumo em texto…"></textarea>
       <div class="copy-actions">
         <button type="button" class="btn primary" onclick="copiarBriefing()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
@@ -704,122 +732,328 @@
   </div>
 </div>
 
-<div class="toast" id="toast">✓ Copiado para a área de transferência!</div>
+<!-- Sending overlay -->
+<div class="sending-overlay" id="sending_overlay">
+  <div class="spinner"></div>
+  <span>Enviando briefing…</span>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-let current=1;
-const total=10;
-const scaleValues={};
-const sectionNames=['Negócio','Tipo e objetivo','Público','Visual','Conteúdo','Funcionalidades','SEO','Infraestrutura','Prazo','Estratégia'];
+// =====================================================
+// CONFIGURAÇÃO — substitua pela sua URL do Formspree
+// =====================================================
+const FORMSPREE_URL = 'https://formspree.io/f/SEU_FORM_ID';
+// =====================================================
 
-function init(){buildPips();updateNav();bindItems();}
+let current = 1;
+const total = 10;
+const scaleValues = {};
+const sectionNames = ['Negócio','Tipo e objetivo','Público','Visual','Conteúdo','Funcionalidades','SEO','Infraestrutura','Prazo','Estratégia'];
 
-function buildPips(){
-  const row=document.getElementById('steps_row');
-  row.innerHTML='';
-  for(let i=1;i<=total;i++){
-    const p=document.createElement('span');
-    p.className='step-pip'+(i===current?' active':i<current?' done':'');
-    p.textContent=sectionNames[i-1];
+// Campos obrigatórios por seção
+// Formato: { type: 'input'|'select'|'textarea'|'radio'|'checkbox'|'scale', id ou name, label }
+const REQUIRED = {
+  1: [
+    {type:'input',    id:'nome_empresa',      label:'Nome da empresa',       wrap:'f_nome_empresa'},
+    {type:'input',    id:'segmento',          label:'Segmento de atuação',   wrap:'f_segmento'},
+    {type:'input',    id:'responsavel',       label:'Seu nome',              wrap:'f_responsavel'},
+    {type:'input',    id:'contato',           label:'E-mail ou WhatsApp',    wrap:'f_contato'},
+    {type:'textarea', id:'descricao_negocio', label:'Descrição do negócio',  wrap:'f_descricao_negocio'},
+    {type:'textarea', id:'diferencial',       label:'Diferencial',           wrap:'f_diferencial'},
+  ],
+  2: [
+    {type:'radio',    name:'tipo',            label:'Tipo do site',          grid:'tipo_site'},
+    {type:'select',   id:'objetivo_principal',label:'Objetivo principal',    wrap:'f_objetivo_principal'},
+    {type:'input',    id:'kpi',              label:'Indicador de sucesso',   wrap:'f_kpi'},
+    {type:'input',    id:'cta_principal',    label:'CTA principal',          wrap:'f_cta_principal'},
+    {type:'radio',    name:'escala',          label:'Escalabilidade',        grid:'escalabilidade'},
+    {type:'textarea', id:'referencias',      label:'Sites de referência',    wrap:'f_referencias'},
+  ],
+  3: [
+    {type:'textarea', id:'publico_alvo',     label:'Cliente ideal',          wrap:'f_publico_alvo'},
+    {type:'input',    id:'faixa_etaria',     label:'Faixa etária',           wrap:'f_faixa_etaria'},
+    {type:'select',   id:'classe_consumo',   label:'Classe de consumo',      wrap:'f_classe_consumo'},
+    {type:'textarea', id:'dores',            label:'Dores do público',       wrap:'f_dores'},
+    {type:'textarea', id:'desejos',          label:'Desejos do público',     wrap:'f_desejos'},
+    {type:'radio',    name:'momento',        label:'Momento do usuário',     grid:'momento_usuario'},
+    {type:'radio',    name:'device',         label:'Dispositivo prioritário',grid:'dispositivo'},
+    {type:'radio',    name:'compra',         label:'Comportamento de compra',grid:'comportamento_compra'},
+  ],
+  4: [
+    {type:'radio',    name:'idvisual',       label:'Identidade visual',      grid:'tem_id_visual'},
+    {type:'radio',    name:'redesign',       label:'Redesign',               grid:'redesign'},
+    {type:'input',    id:'cores',            label:'Cores da marca',         wrap:'f_cores'},
+    {type:'checkbox', id:'tom_marca',        label:'Tom da marca'},
+    {type:'radio',    name:'tema',           label:'Tema de cores',          grid:'tema_cores'},
+    {type:'select',   id:'imagens',          label:'Fornecimento de imagens',wrap:'f_imagens'},
+    {type:'radio',    name:'videos',         label:'Vídeos',                 grid:'tem_videos'},
+  ],
+  5: [
+    {type:'checkbox', id:'paginas',          label:'Páginas do site'},
+    {type:'select',   id:'quem_texto',       label:'Responsável pelos textos',wrap:'f_quem_texto'},
+    {type:'radio',    name:'textos',         label:'Textos prontos',         grid:'tem_textos'},
+    {type:'radio',    name:'idioma',         label:'Idiomas',                grid:'idiomas'},
+    {type:'radio',    name:'filiais',        label:'Múltiplas filiais',      grid:'filiais'},
+  ],
+  6: [
+    {type:'checkbox', id:'funcionalidades',  label:'Funcionalidades'},
+    {type:'checkbox', id:'integracoes',      label:'Integrações'},
+  ],
+  7: [
+    {type:'radio',    name:'seo',            label:'SEO',                    grid:'seo_opt'},
+    {type:'radio',    name:'seolocal',       label:'SEO local',              grid:'seo_local'},
+    {type:'input',    id:'keywords',         label:'Palavras-chave',         wrap:'f_keywords'},
+    {type:'checkbox', id:'tracking',         label:'Ferramentas de rastreamento'},
+    {type:'radio',    name:'trafego_atual',  label:'Tráfego pago',           grid:'trafego_atual'},
+    {type:'radio',    name:'funil',          label:'Funil de vendas',        grid:'funil'},
+    {type:'radio',    name:'lgpd',           label:'LGPD',                   grid:'lgpd'},
+  ],
+  8: [
+    {type:'radio',    name:'dominio',        label:'Domínio',                grid:'dominio'},
+    {type:'input',    id:'url_dominio',      label:'URL do domínio',         wrap:'f_url_dominio'},
+    {type:'radio',    name:'hospedagem',     label:'Hospedagem',             grid:'hospedagem'},
+    {type:'select',   id:'cms',             label:'CMS / Tecnologia',        wrap:'f_cms'},
+    {type:'radio',    name:'cms_auto',       label:'Gestão de conteúdo',     grid:'autonomia_cms'},
+    {type:'radio',    name:'email',          label:'E-mail profissional',    grid:'email_prof'},
+    {type:'radio',    name:'volume',         label:'Volume de acessos',      grid:'volume_acesso'},
+    {type:'checkbox', id:'seguranca',        label:'Segurança / Jurídico'},
+  ],
+  9: [
+    {type:'select',   id:'prazo',            label:'Prazo de entrega',       wrap:'f_prazo'},
+    {type:'select',   id:'prazo_flexivel',   label:'Flexibilidade do prazo', wrap:'f_prazo_flexivel'},
+    {type:'input',    id:'aprovador',        label:'Quem aprova',            wrap:'f_aprovador'},
+    {type:'input',    id:'qtd_aprovadores',  label:'Qtd. de aprovadores',    wrap:'f_qtd_aprovadores'},
+    {type:'scale',    id:'revisoes',         label:'Rodadas de revisão'},
+    {type:'select',   id:'budget',           label:'Faixa de investimento',  wrap:'f_budget'},
+    {type:'radio',    name:'pgto',           label:'Pagamento',              grid:'pagamento'},
+    {type:'checkbox', id:'manutencao',       label:'Manutenção pós-lançamento'},
+  ],
+  10: [
+    {type:'textarea', id:'q1', label:'Por que clientes te escolhem?',      strat:'si_q1'},
+    {type:'textarea', id:'q2', label:'O que mais gera vendas?',            strat:'si_q2'},
+    {type:'textarea', id:'q3', label:'O que afasta clientes?',             strat:'si_q3'},
+    {type:'textarea', id:'q4', label:'Principal objeção',                  strat:'si_q4'},
+    {type:'textarea', id:'q5', label:'O que destacar / não comunicar?',    strat:'si_q5'},
+    {type:'textarea', id:'q6', label:'Se o site der certo…',               strat:'si_q6'},
+  ],
+};
+
+function init() { buildPips(); updateNav(); bindItems(); }
+
+function buildPips() {
+  const row = document.getElementById('steps_row');
+  row.innerHTML = '';
+  for (let i = 1; i <= total; i++) {
+    const p = document.createElement('span');
+    p.className = 'step-pip' + (i === current ? ' active' : i < current ? ' done' : '');
+    p.textContent = sectionNames[i - 1];
     row.appendChild(p);
   }
 }
 
-function bindItems(){
-  document.querySelectorAll('.choice-item').forEach(item=>{
-    const inp=item.querySelector('input');
-    inp.addEventListener('change',()=>{
-      if(inp.type==='radio'){
-        document.querySelectorAll('input[name="'+inp.name+'"]').forEach(r=>r.closest('.choice-item').classList.remove('selected'));
+function bindItems() {
+  document.querySelectorAll('.choice-item').forEach(item => {
+    const inp = item.querySelector('input');
+    inp.addEventListener('change', () => {
+      if (inp.type === 'radio') {
+        document.querySelectorAll('input[name="' + inp.name + '"]').forEach(r => r.closest('.choice-item').classList.remove('selected'));
         item.classList.add('selected');
       } else {
-        item.classList.toggle('checked',inp.checked);
+        item.classList.toggle('checked', inp.checked);
       }
+      // Clear error on group when user selects something
+      const grid = item.closest('.radio-grid, .check-grid, [id]');
+      if (grid) grid.classList.remove('group-error');
+    });
+  });
+  // Clear error on input/select/textarea change
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', () => {
+      const wrap = el.closest('.field');
+      if (wrap) wrap.classList.remove('has-error');
+    });
+    el.addEventListener('change', () => {
+      const wrap = el.closest('.field');
+      if (wrap) wrap.classList.remove('has-error');
     });
   });
 }
 
-function setScale(id,btn,v){
-  scaleValues[id]=v;
-  btn.closest('.scale-row').querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('sel'));
+function setScale(id, btn, v) {
+  scaleValues[id] = v;
+  btn.closest('.scale-row').querySelectorAll('.scale-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
 }
 
-function navigate(dir){
-  if(dir===1&&current===total){showSummary();return;}
-  document.getElementById('s'+current).classList.remove('active');
-  current=Math.max(1,Math.min(total,current+dir));
-  document.getElementById('s'+current).classList.add('active');
-  buildPips();updateNav();
-  window.scrollTo({top:0,behavior:'smooth'});
+// ── Validation ──────────────────────────────────────
+function validateSection(sec) {
+  const rules = REQUIRED[sec];
+  if (!rules) return true;
+  const errors = [];
+  // Clear previous errors
+  document.querySelectorAll('#s' + sec + ' .has-error').forEach(el => el.classList.remove('has-error'));
+  document.querySelectorAll('#s' + sec + ' .group-error').forEach(el => el.classList.remove('group-error'));
+  document.querySelectorAll('#s' + sec + ' .strategic-item.has-error').forEach(el => el.classList.remove('has-error'));
+
+  rules.forEach(rule => {
+    let ok = false;
+    if (rule.type === 'input' || rule.type === 'textarea') {
+      const el = document.getElementById(rule.id);
+      ok = el && el.value.trim().length > 0;
+      if (!ok && rule.wrap) document.getElementById(rule.wrap)?.classList.add('has-error');
+      if (!ok && rule.strat) document.getElementById(rule.strat)?.classList.add('has-error');
+    } else if (rule.type === 'select') {
+      const el = document.getElementById(rule.id);
+      ok = el && el.value !== '';
+      if (!ok && rule.wrap) document.getElementById(rule.wrap)?.classList.add('has-error');
+    } else if (rule.type === 'radio') {
+      ok = !!document.querySelector('input[name="' + rule.name + '"]:checked');
+      if (!ok && rule.grid) document.getElementById(rule.grid)?.classList.add('group-error');
+    } else if (rule.type === 'checkbox') {
+      ok = document.querySelectorAll('#' + rule.id + ' input:checked').length > 0;
+      if (!ok) document.getElementById(rule.id)?.classList.add('group-error');
+    } else if (rule.type === 'scale') {
+      ok = !!scaleValues[rule.id];
+      if (!ok) document.getElementById(rule.id)?.classList.add('group-error');
+    }
+    if (!ok) errors.push(rule.label);
+  });
+
+  const banner = document.getElementById('err' + sec);
+  if (errors.length > 0) {
+    banner.innerHTML = '<strong>Preencha os campos obrigatórios antes de continuar:</strong><ul>' +
+      errors.map(e => '<li>' + e + '</li>').join('') + '</ul>';
+    banner.classList.add('show');
+    document.getElementById('s' + sec).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return false;
+  } else {
+    banner.classList.remove('show');
+    return true;
+  }
 }
 
-function updateNav(){
-  const pct=(current/total)*100;
-  document.getElementById('prog_fill').style.width=pct+'%';
-  document.getElementById('prog_count').textContent=current+' / '+total;
-  document.getElementById('prog_label').textContent=sectionNames[current-1];
-  document.getElementById('prog_label_nav').textContent=current+' / '+total;
-  document.getElementById('btn_back').style.visibility=current>1?'visible':'hidden';
-  document.getElementById('btn_next').innerHTML=current===total
-    ?'Gerar briefing <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>'
-    :'Próximo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>';
+// ── Navigation ───────────────────────────────────────
+function navigate(dir) {
+  if (dir === 1) {
+    if (!validateSection(current)) return;
+    if (current === total) { submitAndShow(); return; }
+  }
+  document.getElementById('s' + current).classList.remove('active');
+  current = Math.max(1, Math.min(total, current + dir));
+  document.getElementById('s' + current).classList.add('active');
+  buildPips(); updateNav();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function getChecked(id){return Array.from(document.querySelectorAll('#'+id+' input:checked')).map(i=>i.value).join(', ')||'—';}
-function getRadio(name){const r=document.querySelector('input[name="'+name+'"]:checked');return r?r.value:'—';}
-function val(id){const el=document.getElementById(id);return el&&el.value.trim()?el.value.trim():'—';}
+function updateNav() {
+  const pct = (current / total) * 100;
+  document.getElementById('prog_fill').style.width = pct + '%';
+  document.getElementById('prog_count').textContent = current + ' / ' + total;
+  document.getElementById('prog_label').textContent = sectionNames[current - 1];
+  document.getElementById('prog_label_nav').textContent = current + ' / ' + total;
+  document.getElementById('btn_back').style.visibility = current > 1 ? 'visible' : 'hidden';
+  document.getElementById('btn_next').innerHTML = current === total
+    ? 'Enviar briefing <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'
+    : 'Próximo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>';
+}
 
-function showSummary(){
-  document.getElementById('s'+current).classList.remove('active');
-  document.getElementById('s11').classList.add('active');
-  document.getElementById('prog_fill').style.width='100%';
-  document.getElementById('nav_bar').style.display='none';
-  document.getElementById('steps_row').style.display='none';
-  document.getElementById('prog_label').textContent='Concluído';
-  document.getElementById('prog_count').textContent='✓';
+// ── Helpers ──────────────────────────────────────────
+function getChecked(id) { return Array.from(document.querySelectorAll('#' + id + ' input:checked')).map(i => i.value).join(', ') || '—'; }
+function getRadio(name) { const r = document.querySelector('input[name="' + name + '"]:checked'); return r ? r.value : '—'; }
+function val(id) { const el = document.getElementById(id); return el && el.value.trim() ? el.value.trim() : '—'; }
 
-  const sections=[
+function buildSections() {
+  return [
     {title:'Negócio',fields:[['Empresa',val('nome_empresa')],['Nome fantasia',val('nome_fantasia')],['Segmento',val('segmento')],['Tempo de mercado',val('tempo_mercado')],['Região',val('regiao')],['Redes sociais',val('redes')],['Responsável',val('responsavel')],['Contato',val('contato')],['Descrição',val('descricao_negocio')],['Concorrentes',val('concorrentes')],['Diferencial',val('diferencial')]]},
-    {title:'Tipo e objetivo',fields:[['Tipo de site',getRadio('tipo')],['Objetivo principal',val('objetivo_principal')],['KPI de sucesso',val('kpi')],['CTA principal',val('cta_principal')],['Escalabilidade',getRadio('escala')],['Site atual',val('site_atual')],['Obs. site atual',val('site_atual_obs')],['Referências',val('referencias')],['Não gosta de',val('nao_gosta')]]},
-    {title:'Público',fields:[['Perfil',val('publico_alvo')],['Faixa etária',val('faixa_etaria')],['Classe de consumo',val('classe_consumo')],['Dores',val('dores')],['Desejos',val('desejos')],['Momento de acesso',getRadio('momento')],['Dispositivo',getRadio('device')],['Comportamento de compra',getRadio('compra')]]},
-    {title:'Visual',fields:[['Identidade visual',getRadio('idvisual')],['Redesign',getRadio('redesign')],['Cores da marca',val('cores')],['Cores proibidas',val('cores_proibidas')],['Tom da marca',getChecked('tom_marca')],['Tema de cores',getRadio('tema')],['Imagens',val('imagens')],['Vídeos',getRadio('videos')],['Obs. visual',val('obs_visual')]]},
-    {title:'Conteúdo',fields:[['Páginas',getChecked('paginas')],['Outras páginas',val('paginas_outras')],['Qtd. páginas',val('qtd_paginas')],['Responsável textos',val('quem_texto')],['Textos prontos',getRadio('textos')],['Idiomas',getRadio('idioma')],['Filiais',getRadio('filiais')],['Qtd. produtos/serviços',val('qtd_produtos')]]},
+    {title:'Tipo e objetivo',fields:[['Tipo de site',getRadio('tipo')],['Objetivo principal',val('objetivo_principal')],['KPI',val('kpi')],['CTA principal',val('cta_principal')],['Escalabilidade',getRadio('escala')],['Site atual',val('site_atual')],['Obs. site atual',val('site_atual_obs')],['Referências',val('referencias')]]},
+    {title:'Público',fields:[['Perfil',val('publico_alvo')],['Faixa etária',val('faixa_etaria')],['Classe de consumo',val('classe_consumo')],['Dores',val('dores')],['Desejos',val('desejos')],['Momento',getRadio('momento')],['Dispositivo',getRadio('device')],['Comportamento',getRadio('compra')]]},
+    {title:'Visual',fields:[['Identidade visual',getRadio('idvisual')],['Redesign',getRadio('redesign')],['Cores',val('cores')],['Cores proibidas',val('cores_proibidas')],['Tom da marca',getChecked('tom_marca')],['Tema de cores',getRadio('tema')],['Imagens',val('imagens')],['Vídeos',getRadio('videos')],['Obs. visual',val('obs_visual')]]},
+    {title:'Conteúdo',fields:[['Páginas',getChecked('paginas')],['Outras páginas',val('paginas_outras')],['Textos',val('quem_texto')],['Textos prontos',getRadio('textos')],['Idiomas',getRadio('idioma')],['Filiais',getRadio('filiais')],['Qtd. produtos',val('qtd_produtos')]]},
     {title:'Funcionalidades',fields:[['Funcionalidades',getChecked('funcionalidades')],['Integrações',getChecked('integracoes')],['Outras',val('func_outras')]]},
-    {title:'SEO e marketing',fields:[['SEO',getRadio('seo')],['SEO local',getRadio('seolocal')],['Palavras-chave',val('keywords')],['Rastreamento',getChecked('tracking')],['Tráfego pago',getRadio('trafego_atual')],['Funil de vendas',getRadio('funil')],['LGPD',getRadio('lgpd')]]},
-    {title:'Infraestrutura',fields:[['Domínio',getRadio('dominio')],['URL',val('url_dominio')],['Registrador',val('registrador')],['Hospedagem',getRadio('hospedagem')],['CMS',val('cms')],['Gestão conteúdo',getRadio('cms_auto')],['E-mail profissional',getRadio('email')],['Volume',getRadio('volume')],['Segurança / Jurídico',getChecked('seguranca')]]},
-    {title:'Prazo e orçamento',fields:[['Prazo',val('prazo')],['Data crítica',val('data_critica')],['Prazo flexível',val('prazo_flexivel')],['Aprovador',val('aprovador')],['Qtd. aprovadores',val('qtd_aprovadores')],['Revisões',scaleValues['revisoes']||'—'],['Investimento',val('budget')],['Pagamento',getRadio('pgto')],['Manutenção',getChecked('manutencao')]]},
-    {title:'Estratégia',fields:[['Por que te escolhem?',val('q1')],['O que mais gera vendas?',val('q2')],['O que afasta clientes?',val('q3')],['Principal objeção',val('q4')],['Destacar / não comunicar',val('q5')],['Se o site der certo…',val('q6')],['Obs. gerais',val('obs_finais')]]},
+    {title:'SEO e marketing',fields:[['SEO',getRadio('seo')],['SEO local',getRadio('seolocal')],['Palavras-chave',val('keywords')],['Rastreamento',getChecked('tracking')],['Tráfego pago',getRadio('trafego_atual')],['Funil',getRadio('funil')],['LGPD',getRadio('lgpd')]]},
+    {title:'Infraestrutura',fields:[['Domínio',getRadio('dominio')],['URL',val('url_dominio')],['Registrador',val('registrador')],['Hospedagem',getRadio('hospedagem')],['CMS',val('cms')],['Gestão',getRadio('cms_auto')],['E-mail prof.',getRadio('email')],['Volume',getRadio('volume')],['Segurança',getChecked('seguranca')]]},
+    {title:'Prazo e orçamento',fields:[['Prazo',val('prazo')],['Data crítica',val('data_critica')],['Flexibilidade',val('prazo_flexivel')],['Aprovador',val('aprovador')],['Qtd. aprovadores',val('qtd_aprovadores')],['Revisões',scaleValues['revisoes']||'—'],['Investimento',val('budget')],['Pagamento',getRadio('pgto')],['Manutenção',getChecked('manutencao')]]},
+    {title:'Estratégia',fields:[['Por que te escolhem?',val('q1')],['O que gera vendas?',val('q2')],['O que afasta?',val('q3')],['Principal objeção',val('q4')],['Destacar / não comunicar',val('q5')],['Se der certo…',val('q6')],['Obs. gerais',val('obs_finais')]]},
   ];
-
-  let html='';
-  sections.forEach(s=>{
-    const lines=s.fields.filter(f=>f[1]!=='—');
-    if(!lines.length)return;
-    html+='<div class="summary-block"><h3>'+s.title+'</h3>';
-    lines.forEach(f=>{html+='<div class="summary-line"><span class="summary-label">'+f[0]+'</span><span class="summary-val">'+f[1]+'</span></div>';});
-    html+='</div>';
-  });
-  document.getElementById('resumo_conteudo').innerHTML=html||'<p style="color:var(--text-muted);font-size:14px">Nenhuma resposta registrada.</p>';
-
-  let txt='=== BRIEFING DE DESENVOLVIMENTO DE SITE ===\nData: '+new Date().toLocaleDateString('pt-BR')+'\n\n';
-  sections.forEach(s=>{
-    const lines=s.fields.filter(f=>f[1]!=='—');
-    if(!lines.length)return;
-    txt+='--- '+s.title.toUpperCase()+' ---\n';
-    lines.forEach(f=>{txt+=f[0]+': '+f[1]+'\n';});
-    txt+='\n';
-  });
-  document.getElementById('copy_area').value=txt;
 }
 
-function copiarBriefing(){
-  const area=document.getElementById('copy_area');
+// ── Submit to Formspree ──────────────────────────────
+async function submitAndShow() {
+  const overlay = document.getElementById('sending_overlay');
+  overlay.classList.add('show');
+
+  // Build flat payload for Formspree
+  const sections = buildSections();
+  const payload = { _subject: 'Novo briefing: ' + val('nome_empresa') };
+  sections.forEach(s => {
+    s.fields.forEach(([label, value]) => {
+      if (value !== '—') payload[label] = value;
+    });
+  });
+
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    overlay.classList.remove('show');
+    if (res.ok) {
+      showSummary(sections);
+    } else {
+      showToast('Erro ao enviar. Tente novamente.', true);
+    }
+  } catch (e) {
+    overlay.classList.remove('show');
+    showToast('Erro de conexão. Verifique sua internet.', true);
+  }
+}
+
+function showSummary(sections) {
+  document.getElementById('s' + current).classList.remove('active');
+  document.getElementById('s11').classList.add('active');
+  document.getElementById('prog_fill').style.width = '100%';
+  document.getElementById('nav_bar').style.display = 'none';
+  document.getElementById('steps_row').style.display = 'none';
+  document.getElementById('prog_label').textContent = 'Concluído';
+  document.getElementById('prog_count').textContent = '✓';
+
+  let html = '';
+  sections.forEach(s => {
+    const lines = s.fields.filter(f => f[1] !== '—');
+    if (!lines.length) return;
+    html += '<div class="summary-block"><h3>' + s.title + '</h3>';
+    lines.forEach(f => { html += '<div class="summary-line"><span class="summary-label">' + f[0] + '</span><span class="summary-val">' + f[1] + '</span></div>'; });
+    html += '</div>';
+  });
+  document.getElementById('resumo_conteudo').innerHTML = html;
+
+  let txt = '=== BRIEFING DE DESENVOLVIMENTO DE SITE ===\nData: ' + new Date().toLocaleDateString('pt-BR') + '\n\n';
+  sections.forEach(s => {
+    const lines = s.fields.filter(f => f[1] !== '—');
+    if (!lines.length) return;
+    txt += '--- ' + s.title.toUpperCase() + ' ---\n';
+    lines.forEach(f => { txt += f[0] + ': ' + f[1] + '\n'; });
+    txt += '\n';
+  });
+  document.getElementById('copy_area').value = txt;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function copiarBriefing() {
+  const area = document.getElementById('copy_area');
   area.select();
-  try{navigator.clipboard.writeText(area.value);}catch(e){document.execCommand('copy');}
-  const toast=document.getElementById('toast');
-  toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'),2800);
+  try { navigator.clipboard.writeText(area.value); } catch (e) { document.execCommand('copy'); }
+  showToast('✓ Copiado para a área de transferência!', false);
+}
+
+function showToast(msg, isError) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast' + (isError ? ' error' : '') + ' show';
+  setTimeout(() => toast.className = 'toast', 3000);
 }
 
 init();

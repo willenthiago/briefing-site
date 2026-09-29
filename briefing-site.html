@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Briefing do seu site</title>
+    <style>
+        :root {
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            --bg: #f6f4ef;
+            --card: #fff;
+            --tx: #1f2937;
+            --mu: #6b7280;
+            --ac: #0f766e;
+            --bd: #d9d5cb;
+            --hi: #e6f4f1
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #14181a;
+                --card: #1e2427;
+                --tx: #e8ecec;
+                --mu: #98a3a6;
+                --ac: #2dd4bf;
+                --bd: #39424a;
+                --hi: #183633
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #14181a;
+            --card: #1e2427;
+            --tx: #e8ecec;
+            --mu: #98a3a6;
+            --ac: #2dd4bf;
+            --bd: #39424a;
+            --hi: #183633
+        }
+
+        html {
+            scroll-padding-top: env(safe-area-inset-top, 0px)
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--tx);
+            font: 18px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif
+        }
+
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 20px 16px 60px
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            margin: .2em 0
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            margin: .2em 0 .8em
+        }
+
+        .mu {
+            color: var(--mu);
+            font-size: .95rem
+        }
+
+        .bar {
+            height: 8px;
+            background: var(--bd);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 14px 0 6px
+        }
+
+        .bar i {
+            display: block;
+            height: 100%;
+            background: var(--ac);
+            transition: width .3s
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--bd);
+            border-radius: 14px;
+            padding: 18px;
+            margin: 14px 0
+        }
+
+        .q {
+            margin: 0 0 22px
+        }
+
+        .q label.t {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px
+        }
+
+        .h {
+            color: var(--mu);
+            font-size: .9rem;
+            margin: 0 0 8px
+        }
+
+        input[type=text],
+        textarea {
+            width: 100%;
+            font: inherit;
+            padding: 12px;
+            border: 1.5px solid var(--bd);
+            border-radius: 10px;
+            background: var(--bg);
+            color: var(--tx)
+        }
+
+        textarea {
+            min-height: 90px
+        }
+
+        .o {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border: 1.5px solid var(--bd);
+            border-radius: 10px;
+            margin: 6px 0;
+            cursor: pointer;
+            flex-wrap: wrap
+        }
+
+        .o:has(input:checked) {
+            background: var(--hi);
+            border-color: var(--ac)
+        }
+
+        .o input[type=radio],
+        .o input[type=checkbox] {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--ac)
+        }
+
+        .o input[type=text] {
+            flex: 1;
+            min-width: 140px;
+            padding: 8px
+        }
+
+        button {
+            font: inherit;
+            font-weight: 600;
+            padding: 14px 22px;
+            border-radius: 12px;
+            border: 0;
+            cursor: pointer;
+            background: var(--ac);
+            color: #fff
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) button {
+                color: #06201d
+            }
+        }
+
+        button.g {
+            background: transparent;
+            color: var(--tx);
+            border: 1.5px solid var(--bd)
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 10px
+        }
+
+        button.s {
+            background: transparent;
+            color: var(--ac);
+            border: 1.5px dashed var(--ac)
+        }
+
+        .chips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin: 8px 0
+        }
+
+        .chips button {
+            padding: 6px 12px;
+            font-size: .9rem;
+            border-radius: 20px;
+            background: transparent;
+            color: var(--mu);
+            border: 1.5px solid var(--bd)
+        }
+
+        .chips button.on {
+            background: var(--ac);
+            color: #fff;
+            border-color: var(--ac)
+        }
+
+        .chips button.dn {
+            color: var(--ac);
+            border-color: var(--ac)
+        }
+
+        details {
+            margin: 10px 0
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--ac)
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .95rem
+        }
+
+        td {
+            padding: 6px 4px;
+            border-bottom: 1px solid var(--bd);
+            vertical-align: top
+        }
+
+        td:first-child {
+            font-weight: 600;
+            width: 34%
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-break: break-word;
+            background: var(--bg);
+            border: 1px solid var(--bd);
+            border-radius: 10px;
+            padding: 12px;
+            font: .9rem/1.5 ui-monospace, monospace;
+            max-height: 50vh;
+            overflow: auto
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>Vamos criar o seu site 👋</h1>
+        <p class="mu">Responda do seu jeito, como numa conversa. Não precisa saber de tecnologia. Se não souber, marque
+            "Não sei" ou deixe em branco — resolvemos juntos. Suas respostas ficam salvas neste aparelho.</p>
+        <details>
+            <summary>📖 Dicionário: palavras difíceis explicadas</summary>
+            <div style="overflow-x:auto">
+                <table id="dic"></table>
+            </div>
+        </details>
+        <div class="bar"><i id="pb"></i></div>
+        <div class="mu" id="pt"></div>
+        <div class="chips" id="ch"></div>
+        <div id="app"></div>
+    </main>
+    <script>
+        var NS = "Não sei", NP = "Não sei, preciso de ajuda";
+        var B = [
+            {
+                n: "Sobre você e seu negócio", q: [
+                    ["nome", "Qual é o nome da sua empresa ou do seu trabalho?", "t"],
+                    ["faz", "O que você vende ou faz?", "l", "Conte como se estivesse explicando para um amigo."],
+                    ["dif", "O que faz seu negócio ser melhor ou diferente dos outros?", "l"],
+                    ["cli", "Quem são os seus clientes?", "l", "Ex.: mulheres de 30 a 50 anos, donos de restaurantes, moradores do bairro."],
+                    ["conc", "Quem são seus principais concorrentes?", "l", "Se tiver o site ou Instagram deles, cole aqui."],
+                    ["site", "Você já tem site hoje?", "r", ["Não", "Sim, o endereço é…"]]]
+            },
+            {
+                n: "O que você espera do site", q: [
+                    ["obj", "Para que você quer o site?", "c", ["Para as pessoas me encontrarem e conhecerem meu trabalho", "Para receber pedidos de orçamento", "Para receber mensagens no WhatsApp", "Para vender produtos pela internet", "Para clientes marcarem horário comigo", "Para mostrar fotos dos meus trabalhos", "Outro…"], "Marque quantos quiser."],
+                    ["acao", "Quando alguém entrar no site, qual é a principal coisa que você quer que essa pessoa faça?", "t", "Ex.: me ligar, chamar no WhatsApp, comprar."],
+                    ["ads", "Você pretende fazer anúncios pagos (Google, Instagram, Facebook) levando pessoas ao site?", "r", ["Sim", "Não", NS], "Isso ajuda a decidir se o melhor é uma página única (focada em uma oferta) ou um site com várias páginas."],
+                    ["meta", "Como você vai saber se o site deu certo?", "t", "Ex.: “Quero receber 20 contatos por mês” ou “vender 10 produtos por semana”. É o seu placar de resultado."]]
+            },
+            {
+                n: "Como o site deve funcionar", q: [
+                    ["func", "Você quer que o site tenha:", "c", ["Botão que abre conversa no WhatsApp", "Formulário onde a pessoa deixa nome e telefone", "Fotos e vídeos", "Localização no mapa", "Loja para vender e receber pagamento (cartão, Pix, boleto)", "Agenda para marcar horários", "Área com login e senha para clientes", "Textos e novidades (um “blog”)", "Opiniões de clientes satisfeitos", "Site em outro idioma. Qual?…", NP]],
+                    ["edit", "Você quer poder trocar textos e fotos do site sozinho depois?", "r", ["Sim", "Não, prefiro que você faça", NS]],
+                    ["sis", "Você usa algum sistema no seu negócio que precisa “conversar” com o site?", "r", ["Não", "Sim…", NS], "Ex.: sistema de vendas, controle de estoque, agenda, e-mail marketing."]]
+            },
+            {
+                n: "Textos, fotos e logo", q: [
+                    ["pag", "Quais páginas você imagina no site?", "t", "Ex.: Início, Quem somos, Serviços, Contato. Se não souber, escreva “quero sugestões”."],
+                    ["txt", "Quem vai escrever os textos?", "r", ["Eu mesmo", "Preciso de ajuda para escrever", "Já tenho prontos"]],
+                    ["fot", "Você tem fotos boas do seu negócio, produtos ou equipe?", "r", ["Sim", "Poucas", "Não"]],
+                    ["logo", "Você tem logotipo (a marca da empresa)?", "r", ["Sim", "Não, preciso criar"]],
+                    ["dep", "Você tem depoimentos de clientes ou fotos de trabalhos já feitos?", "r", ["Sim", "Não"]],
+                    ["ent", "Até quando consegue enviar textos, fotos e logo?", "t", "Sem esse material não é possível terminar no prazo."]]
+            },
+            {
+                n: "Aparência do site", q: [
+                    ["cor", "Você tem cores e estilo da marca definidos? Quais?", "t"],
+                    ["gost", "Cole o endereço de 2 ou 3 sites que você acha bonitos e diga o que gostou.", "l"],
+                    ["ngost", "Tem algum site que você não gosta? Por quê?", "l"],
+                    ["tom", "Como o site deve “conversar” com as pessoas?", "r", ["Sério e profissional", "Simples e amigável", "Moderno e ousado", "Luxuoso", "Popular e direto"]]]
+            },
+            {
+                n: "Endereço e onde o site vai morar", q: [
+                    ["dom", "Você já tem um endereço para o site?", "r", ["Sim, é…", "Não", NS], "Ex.: www.suaempresa.com.br"],
+                    ["host", "Você já paga por algum lugar onde o site fica guardado?", "r", ["Sim", "Não", NS], "É como o aluguel do terreno onde o site fica para estar sempre no ar."],
+                    ["mail", "Quer e-mail com o nome da empresa?", "r", ["Sim", "Não"], "Ex.: contato@suaempresa.com.br"],
+                    ["redes", "Cole os links das suas redes sociais e da ficha da empresa no Google (a que aparece no mapa).", "l"],
+                    ["mig", "Se já tem site, quer levar as informações dele para o novo?", "r", ["Sim", "Não", "Ainda não tenho site"]]]
+            },
+            {
+                n: "Google e resultados", q: [
+                    ["kw", "O que uma pessoa digitaria no Google para encontrar você?", "t", "Ex.: “dentista em Brasília”, “marmita fitness”."],
+                    ["ana", "Quer que eu instale ferramentas que mostram quantas pessoas visitam o site e de onde vêm?", "r", ["Sim", "Não", NS]]]
+            },
+            {
+                n: "Dados da empresa e cuidados legais", q: [
+                    ["cnpj", "Nome oficial da empresa, CNPJ e endereço (para o rodapé do site).", "l"],
+                    ["lgpd", "O site vai pedir dados de clientes (nome, telefone, e-mail)?", "r", ["Sim", "Não"], "Se sim, a lei (LGPD) exige avisos de privacidade. Eu cuido disso com você."],
+                    ["reg", "Seu ramo tem regra especial sobre o que pode ser dito ou mostrado?", "r", ["Sim…", "Não", NS], "Ex.: saúde, advocacia, finanças."]]
+            },
+            {
+                n: "Prazo, valor e combinados", q: [
+                    ["data", "Existe uma data em que o site precisa estar no ar? Por quê?", "t", "Ex.: inauguração, campanha."],
+                    ["orc", "Quanto pretende investir?", "r", ["Até R$…", "Prefiro receber uma proposta"]],
+                    ["dec", "Quem decide e aprova o trabalho? Mais alguém opina (sócio, esposa, filho…)?", "t"],
+                    ["man", "Depois que o site estiver no ar, quem vai cuidar dele?", "r", ["Quero contratar você para manter", "Vou cuidar sozinho", NS]],
+                    ["mais", "Tem mais alguma coisa importante que eu não perguntei?", "l"]]
+            }
+        ];
+        var D = [["Landing page", "Uma página só, feita para um único objetivo, como chamar no WhatsApp ou comprar um produto."], ["Site institucional", "O cartão de visitas da empresa na internet, com várias páginas."], ["Domínio", "O endereço do site (www.suaempresa.com.br)."], ["Hospedagem", "O aluguel do terreno onde o site fica guardado."], ["Deploy / publicar", "Colocar o site no ar para todos verem."], ["Lead", "Pessoa interessada que deixou nome e telefone ou e-mail."], ["KPI", "O placar que mostra se o site está dando resultado."], ["API / integração", "Fazer o site conversar com outro sistema que você já usa."], ["Painel (CMS)", "Área para você trocar textos e fotos sozinho."], ["SEO", "Técnicas para o site aparecer no Google."], ["Responsivo", "Site que se ajusta bem ao celular, tablet e computador."], ["LGPD", "Lei que exige cuidado com dados pessoais dos clientes."]];
+        document.getElementById("dic").innerHTML = D.map(function (r) {return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td></tr>"}).join("");
+        var A = {}, S = 0, K = "briefing-site-v1", app = document.getElementById("app");
+        try {var sv = JSON.parse(localStorage.getItem(K) || "null"); if (sv) A = sv} catch (e) { }
+        function save() {try {localStorage.setItem(K, JSON.stringify(A))} catch (e) { } }
+        function esc(s) {return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;")}
+        function val(id) {return A[id] || (A[id] = {v: [], x: {}})}
+        function qh(q, bi, qi) {
+            var id = q[0], t = q[2], o = q[3], h = q[4], a = val(id), s = '<div class="q"><label class="t">' + (qi + 1) + '. ' + esc(q[1]) + '</label>';
+            if (t == "t" && Array.isArray(o)) {h = h}
+            if (t == "r" && typeof o == "string") { }
+            if (t == "t" || t == "l") {h = Array.isArray(o) ? h : (typeof o == "string" ? o : h)}
+            if (h) s += '<p class="h">' + esc(h) + '</p>';
+            if (t == "t") s += '<input type="text" data-id="' + id + '" value="' + esc(a.v[0] || "") + '">';
+            else if (t == "l") s += '<textarea data-id="' + id + '">' + esc(a.v[0] || "") + '</textarea>';
+            else o.forEach(function (op, i) {
+                var x = op.slice(-1) == "…", lab = x ? op.slice(0, -1) : op, ck = a.v.indexOf(op) > -1;
+                s += '<label class="o"><input type="' + (t == "r" ? "radio" : "checkbox") + '" name="' + id + '" data-id="' + id + '" data-o="' + esc(op) + '"' + (ck ? " checked" : "") + '> <span>' + esc(lab) + '</span>' + (x ? '<input type="text" data-xid="' + id + '" data-xo="' + esc(op) + '" value="' + esc(a.x[op] || "") + '" placeholder="escreva aqui">' : "") + '</label>'
+            });
+            return s + '</div>'
+        }
+        function render() {
+            var b = B[S], c = 0;
+            document.getElementById("pb").style.width = ((S + 1) / (B.length + 1) * 100) + "%";
+            document.getElementById("pt").textContent = "Etapa " + (S + 1) + " de " + (B.length + 1) + " — " + b.n;
+            var h = '<div class="card"><h2>' + b.n + '</h2>' + b.q.map(function (q, i) {return qh(q, S, i)}).join("") + '</div><div class="nav"><button class="g" ' + (S ? "" : "disabled style='opacity:.4'") + ' onclick="go(-1)">← Voltar</button><button onclick="go(1)">' + (S == B.length - 1 ? "Ver resumo →" : "Próximo →") + '</button></div><div class="nav" style="justify-content:center"><button class="s" onclick="go(1)">Pular esta etapa ⏭</button></div>';
+            app.innerHTML = h; chips(); window.scrollTo(0, 0); bind()
+        }
+        function done(i) {return B[i].q.some(function (q) {var a = A[q[0]]; return a && a.v.join('').length})}
+        function chips() {document.getElementById('ch').innerHTML = B.map(function (b, i) {return '<button title="' + esc(b.n) + '" class="' + (i == S ? 'on' : done(i) ? 'dn' : '') + '" onclick="S=' + i + ';render()">' + (i + 1) + (done(i) && i != S ? ' ✓' : '') + '</button>'}).join('') + '<button class="' + (S >= B.length ? 'on' : '') + '" onclick="summary()">Resumo</button>'}
+        function bind() {
+            app.querySelectorAll("[data-id]").forEach(function (e) {
+                e.onchange = e.oninput = function () {
+                    var a = val(e.dataset.id);
+                    if (e.type == "radio") {a.v = [e.dataset.o]} else if (e.type == "checkbox") {var o = e.dataset.o, i = a.v.indexOf(o); if (e.checked && i < 0) a.v.push(o); if (!e.checked && i > -1) a.v.splice(i, 1)} else a.v = [e.value]; save()
+                }
+            });
+            app.querySelectorAll("[data-xid]").forEach(function (e) {e.oninput = function () {var a = val(e.dataset.xid), o = e.dataset.xo; a.x[o] = e.value; if (e.value && a.v.indexOf(o) < 0) {var r = e.closest(".o").querySelector("input:not([type=text])"); if (r.type == "radio") a.v = [o]; else a.v.push(o); r.checked = true} save()}})
+        }
+        function txt() {var out = "BRIEFING DO SITE\n"; B.forEach(function (b, bi) {if (!done(bi)) return; out += "\n== " + b.n.toUpperCase() + " ==\n"; b.q.forEach(function (q) {var a = A[q[0]], r = a ? a.v.map(function (o) {var x = a.x[o]; return o.slice(-1) == "…" ? o.slice(0, -1) + (x ? ": " + x : "") : o}).filter(Boolean).join("; ") : ""; out += "• " + q[1] + "\n  → " + (r || "(sem resposta)") + "\n"})}); return out}
+        function go(d) {S += d; if (S >= B.length) {summary(); return } render()}
+        function summary() {
+            S = B.length; document.getElementById("pb").style.width = "100%"; document.getElementById("pt").textContent = "Última etapa — Resumo";
+            app.innerHTML = '<div class="card"><h2>Pronto! 🎉</h2><p>Confira suas respostas (etapas puladas não aparecem). Depois toque em um botão para enviar ao seu desenvolvedor.</p><pre id="sm"></pre><div class="nav" style="flex-wrap:wrap"><button onclick="wa()">Enviar por WhatsApp</button><button class="g" onclick="cp()">Copiar respostas</button><button class="g" onclick="S=B.length-1;render()">← Voltar</button></div><p class="mu" id="msg"></p></div>';
+            chips(); document.getElementById("sm").textContent = txt(); window.scrollTo(0, 0)
+        }
+        function wa() {window.open("https://wa.me/?text=" + encodeURIComponent(txt()), "_blank")}
+        function cp() {
+            var m = document.getElementById("msg"), t = txt(); try {navigator.clipboard.writeText(t).then(function () {m.textContent = "Copiado! Agora é só colar na conversa."}, f)} catch (e) {f()}
+            function f() {var r = document.createRange(); r.selectNodeContents(document.getElementById("sm")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); m.textContent = "Texto selecionado: use Copiar no seu aparelho."}
+        }
+        render();
+    </script>
+</body>
+
+</html>
